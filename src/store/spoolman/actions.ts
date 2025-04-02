@@ -185,6 +185,11 @@ export const actions = {
     commit('setCurrency', payload.response)
   },
 
+  async onSettingWeight (a, payload: SpoolmanProxyResponse<{ value: string }>) {
+    payload = payloadAsSpoolmanProxyResponseV2(payload)
+    console.log(payload)
+  },
+
   async initializeWebsocketConnection ({ state, rootState, dispatch }) {
     if (rootState.server.config.spoolman?.server) {
       if (state.socket?.readyState === WebSocket.OPEN) {

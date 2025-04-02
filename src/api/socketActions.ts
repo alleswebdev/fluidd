@@ -962,5 +962,22 @@ export const SocketActions = {
         }
       }
     )
+  },
+
+  async serverSpoolmanProxySetWeight (weight: number, spoolID: number, options?: NotifyOptions) {
+    baseEmit(
+      'server.spoolman.proxy', {
+        dispatch: 'spoolman/onSettingWeight',
+        ...options,
+        params: {
+          request_method: 'PATCH',
+          path: `/v1/spool/${spoolID}`,
+          use_v2_response: true,
+          body: JSON.stringify({
+            remaining_weight: weight
+          })
+        }
+      }
+    )
   }
 }

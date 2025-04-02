@@ -16,6 +16,16 @@
         {{ $t('app.spoolman.label.change_spool') }}
       </app-btn>
 
+      <app-btn
+        v-if="!klippyReady || !targetableMacros.length"
+        small
+        class="me-1 my-1"
+        :disabled="!isConnected"
+        @click="setSpoolWeight"
+      >
+        Сбросить вес
+      </app-btn>
+
       <v-menu
         v-else
         bottom
@@ -212,6 +222,7 @@ import type { Spool } from '@/store/spoolman/types'
 import StatusLabel from '@/components/widgets/status/StatusLabel.vue'
 import type { Macro } from '@/store/macros/types'
 import type { SpoolmanRemainingFilamentUnit } from '@/store/config/types'
+import { SocketActions } from '@/api/socketActions'
 
 type MacroWithSpoolId = Macro & {
   variables: Record<string, unknown> & {
@@ -228,6 +239,10 @@ export default class SpoolmanCard extends Mixins(StateMixin) {
       show: true,
       targetMacro: targetMacro?.name
     })
+  }
+
+  setSpoolWeight () {
+    SocketActions.serverSpoolmanProxySetWeight(1000, this.$typedState.spoolman.activeSpool || 0)
   }
 
   get selectedCardFields (): string[][] {
